@@ -1,108 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Be My Valentine 💖</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Comic Sans MS', 'Segoe UI', sans-serif;
-      overflow: hidden;
-    }
+<meta charset="UTF-8">
+<title>Be My Valentine 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    .card {
-      background: white;
-      padding: 30px;
-      border-radius: 20px;
-      text-align: center;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-      max-width: 90%;
-    }
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: radial-gradient(circle at top, #ffd1dc, #ff5e7e);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Comic Sans MS', 'Segoe UI', sans-serif;
+  overflow: hidden;
+}
 
-    h1 {
-      color: #ff4d6d;
-      margin-bottom: 20px;
-    }
+.card {
+  background: white;
+  padding: 30px;
+  border-radius: 25px;
+  text-align: center;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+  max-width: 90%;
+  animation: popIn 0.5s ease;
+}
 
-    button {
-      border: none;
-      padding: 15px 30px;
-      border-radius: 50px;
-      font-size: 18px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin: 10px;
-    }
+@keyframes popIn {
+  from { transform: scale(0.7); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
 
-    #yes {
-      background: #ff4d6d;
-      color: white;
-    }
+h1 {
+  color: #ff2f68;
+}
 
-    #no {
-      background: #ddd;
-    }
+button {
+  border: none;
+  padding: 15px 30px;
+  border-radius: 50px;
+  font-size: 18px;
+  cursor: pointer;
+  margin: 10px;
+  transition: all 0.3s ease;
+}
 
-    .heart {
-      position: absolute;
-      color: rgba(255,255,255,0.8);
-      font-size: 24px;
-      animation: float 6s linear infinite;
-    }
+#yes {
+  background: #ff2f68;
+  color: white;
+}
 
-    @keyframes float {
-      0% { transform: translateY(100vh); opacity: 0; }
-      10% { opacity: 1; }
-      100% { transform: translateY(-10vh); opacity: 0; }
-    }
-  </style>
+#no {
+  background: #eee;
+}
+
+.float {
+  position: absolute;
+  pointer-events: none;
+  animation: floatUp 4s linear forwards;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(100vh); opacity: 1; }
+  to { transform: translateY(-10vh); opacity: 0; }
+}
+
+.shake {
+  animation: shake 0.3s;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  50% { transform: translateX(10px); }
+  75% { transform: translateX(-10px); }
+  100% { transform: translateX(0); }
+}
+</style>
 </head>
+
 <body>
 
-  <div class="card" id="card">
-    <h1>Will you be my Valentine? 💘</h1>
-    <button id="yes" onclick="yesClicked()">Yes 💖</button>
-    <button id="no" onclick="noClicked()">No 😭</button>
-  </div>
+<div class="card" id="card">
+  <h1>Will you be my Valentine? 💘</h1>
+  <button id="yes" onclick="yesClicked()">Yes 💖</button>
+  <button id="no" onclick="noClicked()">No 😭</button>
+</div>
 
-  <script>
-    let yesSize = 1;
+<script>
+let yesScale = 1;
+let noCount = 0;
 
-    function noClicked() {
-      yesSize += 0.2;
-      document.getElementById("yes").style.transform = `scale(${yesSize})`;
+const noTexts = [
+  "No 😭",
+  "Are you sure??",
+  "PLS 😢",
+  "Don't do this",
+  "Be serious rn",
+  "My heart 💔",
+  "This is cruel",
+  "Try again"
+];
 
-      const noBtn = document.getElementById("no");
-      noBtn.style.transform = `translate(${Math.random()*100 - 50}px, ${Math.random()*50 - 25}px)`;
-    }
+function noClicked() {
+  noCount++;
 
-    function yesClicked() {
-      document.getElementById("card").innerHTML = `
-        <h1>YAYYYY!! 💖💖💖</h1>
-        <p>You just made my heart very happy 🥰</p>
-        <p>Happy Valentine’s Day 💕</p>
-      `;
-    }
-
-    function createHeart() {
-      const heart = document.createElement("div");
-      heart.className = "heart";
-      heart.innerHTML = "💖";
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.fontSize = Math.random() * 20 + 20 + "px";
-      document.body.appendChild(heart);
-
-      setTimeout(() => heart.remove(), 6000);
-    }
-
-    setInterval(createHeart, 400);
-  </script>
-
-</body>
-</html>
+  // YES gets huge
+  yesScale += 0.35;
+  document.getElementB
