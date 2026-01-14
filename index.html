@@ -108,4 +108,53 @@ function noClicked() {
 
   // YES gets huge
   yesScale += 0.35;
-  document.getElementB
+  document.getElementById("yes").style.transform = `scale(${yesScale})`;
+
+  // NO goes feral
+  const noBtn = document.getElementById("no");
+  noBtn.textContent = noTexts[noCount % noTexts.length];
+  noBtn.style.transform = `
+    translate(${Math.random()*300 - 150}px, ${Math.random()*200 - 100}px)
+    rotate(${Math.random()*360}deg)
+    scale(${Math.max(0.4, 1 - noCount * 0.05)})
+  `;
+
+  // Screen shake
+  document.body.classList.add("shake");
+  setTimeout(() => document.body.classList.remove("shake"), 300);
+
+  // Broken hearts
+  for (let i = 0; i < 6; i++) {
+    spawn("💔");
+  }
+}
+
+function yesClicked() {
+  document.getElementById("card").innerHTML = `
+    <h1>YAYYYY 💖💖💖</h1>
+    <p>You just made my entire year 🥰</p>
+    <button onclick="reset()">Do it again 😏</button>
+  `;
+
+  for (let i = 0; i < 30; i++) {
+    spawn(Math.random() > 0.5 ? "💖" : "🎉");
+  }
+}
+
+function reset() {
+  location.reload();
+}
+
+function spawn(symbol) {
+  const el = document.createElement("div");
+  el.className = "float";
+  el.textContent = symbol;
+  el.style.left = Math.random() * 100 + "vw";
+  el.style.fontSize = Math.random() * 25 + 20 + "px";
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 4000);
+}
+</script>
+
+</body>
+</html>
