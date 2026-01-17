@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Be My Valentine 💖</title>
+<title>Important Question 💖</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -19,21 +19,34 @@ body {
 
 .card {
   background: white;
-  padding: 30px;
-  border-radius: 25px;
+  padding: 35px;
+  border-radius: 30px;
   text-align: center;
   box-shadow: 0 30px 60px rgba(0,0,0,0.3);
   max-width: 90%;
-  animation: popIn 0.5s ease;
+  animation: popIn 0.6s ease;
 }
 
 @keyframes popIn {
-  from { transform: scale(0.7); opacity: 0; }
+  from { transform: scale(0.6); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
+}
+
+.fade {
+  animation: fadeIn 1.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 h1 {
   color: #ff2f68;
+}
+
+p {
+  font-size: 18px;
 }
 
 button {
@@ -82,35 +95,93 @@ button {
 
 <body>
 
-<div class="card" id="card">
-  <h1>Will you be my Valentine? 💘</h1>
-  <button id="yes" onclick="yesClicked()">Yes 💖</button>
-  <button id="no" onclick="noClicked()">No 😭</button>
-</div>
+<div class="card fade" id="card"></div>
 
 <script>
+let stage = 0;
 let yesScale = 1;
 let noCount = 0;
 
+const compliments = [
+  "You’re genuinely one of the most beautiful people I know 🥺",
+  "You make everything feel lighter just by existing ✨",
+  "I smile way more than I admit because of you 😌",
+  "You’re kind, funny, and dangerously cute 💕",
+  "Honestly… how are you even real?"
+];
+
 const noTexts = [
   "No 😭",
-  "Are you sure??",
-  "PLS 😢",
-  "Don't do this",
+  "Wait WAIT",
+  "That’s illegal",
+  "Try again",
   "Be serious rn",
   "My heart 💔",
-  "This is cruel",
-  "Try again"
+  "Wrong answer",
+  "You sure about that?"
 ];
+
+function nextStage() {
+  stage++;
+
+  if (stage === 1) intro();
+  if (stage === 2) complimentStage(0);
+  if (stage === 3) warningStage();
+  if (stage === 4) decisionStage();
+}
+
+function intro() {
+  card.innerHTML = `
+    <h1>I know you’ve been thinking about this… 💭</h1>
+    <p>Probably longer than you’d like to admit 😏</p>
+    <button onclick="nextStage()">Continue 👉</button>
+  `;
+}
+
+function complimentStage(i) {
+  if (i >= compliments.length) {
+    nextStage();
+    return;
+  }
+
+  card.innerHTML = `
+    <h1>${compliments[i]}</h1>
+    <p>Just saying.</p>
+  `;
+
+  spawn("💖");
+  spawn("✨");
+
+  setTimeout(() => complimentStage(i + 1), 2200);
+}
+
+function warningStage() {
+  card.innerHTML = `
+    <h1>⚠️ Important Notice ⚠️</h1>
+    <p>The next page contains a very serious question.</p>
+    <p>Choosing “No” may result in:</p>
+    <p>• Endless guilt 😔<br>
+       • Me being dramatically sad<br>
+       • Bad vibes only</p>
+    <p><strong>You have been warned.</strong></p>
+    <button onclick="nextStage()">I’m ready 😳</button>
+  `;
+}
+
+function decisionStage() {
+  card.innerHTML = `
+    <h1>Will you be my Valentine? 💘</h1>
+    <button id="yes" onclick="yesClicked()">Yes 💖</button>
+    <button id="no" onclick="noClicked()">No 😭</button>
+  `;
+}
 
 function noClicked() {
   noCount++;
 
-  // YES gets huge
   yesScale += 0.35;
   document.getElementById("yes").style.transform = `scale(${yesScale})`;
 
-  // NO goes feral
   const noBtn = document.getElementById("no");
   noBtn.textContent = noTexts[noCount % noTexts.length];
   noBtn.style.transform = `
@@ -119,30 +190,23 @@ function noClicked() {
     scale(${Math.max(0.4, 1 - noCount * 0.05)})
   `;
 
-  // Screen shake
   document.body.classList.add("shake");
   setTimeout(() => document.body.classList.remove("shake"), 300);
 
-  // Broken hearts
-  for (let i = 0; i < 6; i++) {
-    spawn("💔");
-  }
+  for (let i = 0; i < 6; i++) spawn("💔");
 }
 
 function yesClicked() {
-  document.getElementById("card").innerHTML = `
-    <h1>YAYYYY 💖💖💖</h1>
-    <p>You just made my entire year 🥰</p>
-    <button onclick="reset()">Do it again 😏</button>
+  card.innerHTML = `
+    <h1>YAYYYYY 💖💖💖</h1>
+    <p>You just made my whole year 🥰</p>
+    <p>I knew you’d choose correctly 😏</p>
+    <button onclick="location.reload()">Do it again 😈</button>
   `;
 
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < 40; i++) {
     spawn(Math.random() > 0.5 ? "💖" : "🎉");
   }
-}
-
-function reset() {
-  location.reload();
 }
 
 function spawn(symbol) {
@@ -154,6 +218,8 @@ function spawn(symbol) {
   document.body.appendChild(el);
   setTimeout(() => el.remove(), 4000);
 }
+
+nextStage();
 </script>
 
 </body>
